@@ -1,4 +1,4 @@
-package com.example.demo.core;
+package com.example.demo.demo;
 
 import com.example.demo.facade.ShoeFacade;
 import java.util.Optional;

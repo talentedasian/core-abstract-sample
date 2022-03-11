@@ -1,4 +1,4 @@
-package com.example.demo.core;
+package com.example.demo.demo;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
