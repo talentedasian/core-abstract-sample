@@ -1,9 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.demo.InMemoryStockEntityRepo;
-import com.example.demo.demo.StockEntity;
-import com.example.demo.demo.StockEntityRepository;
-import com.example.demo.demo.StockService;
+import com.example.demo.core.InMemoryStockEntityRepo;
+import com.example.demo.core.StockEntity;
+import com.example.demo.core.StockEntityRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

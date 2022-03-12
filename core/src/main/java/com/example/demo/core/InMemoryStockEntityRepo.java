@@ -1,9 +1,4 @@
-package com.example.demo.demo;
-
-import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
-import java.util.Map;
+package com.example.demo.core;
 
 /**
  * In memory implementation -- mostly used for tests -- for

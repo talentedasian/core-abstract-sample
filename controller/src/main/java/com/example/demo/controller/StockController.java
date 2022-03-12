@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.demo.StockService;
+import com.example.demo.core.StockService;
 import com.example.demo.dto.out.Stock;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

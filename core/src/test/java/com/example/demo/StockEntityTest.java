@@ -1,14 +1,11 @@
 package com.example.demo;
 
-import com.example.demo.demo.InvalidStockQuantity;
-import com.example.demo.demo.StockEntity;
-import org.assertj.core.api.AssertionsForClassTypes;
+import com.example.demo.core.InvalidStockQuantity;
+import com.example.demo.core.StockEntity;
 import org.assertj.core.api.ThrowableAssert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Value;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
