@@ -4,7 +4,10 @@ public record StockEntity(int quantity) {
 
   public StockEntity {
     if (quantity < 0){
-      throw new InvalidStockQuantity();
+      throw InvalidStockQuantity.negativeCause();
+    }
+    if (quantity > 30) {
+      throw InvalidStockQuantity.overflowCause();
     }
   }
 
