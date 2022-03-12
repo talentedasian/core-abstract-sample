@@ -26,7 +26,7 @@ public class StockControllerTest {
   @Autowired StockEntityRepository stockEntityRepo;
 
   @Test
-  public void successfulResponseOnGetStockEndpoint() throws Exception{
+  public void emptyStock() throws Exception{
     stockEntityRepo.saveStock(new StockEntity(0));
 
     mvc.perform(get(create("/stock")))
@@ -34,6 +34,22 @@ public class StockControllerTest {
         .andExpect(jsonPath("state", equalTo("EMPTY")));
   }
 
+  @Test
+  public void fullStock() throws Exception{
+    stockEntityRepo.saveStock(new StockEntity(30));
 
+    mvc.perform(get(create("/stock")))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("state", equalTo("FULL")));
+  }
+
+  @Test
+  public void someStock() throws Exception{
+    stockEntityRepo.saveStock(new StockEntity(12));
+
+    mvc.perform(get(create("/stock")))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("state", equalTo("SOME")));
+  }
 
 }
