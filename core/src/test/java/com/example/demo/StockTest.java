@@ -1,7 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.demo.InvalidStockQuantity;
-import com.example.demo.demo.Stock;
+import com.example.demo.demo.StockEntity;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +13,7 @@ public class StockTest {
 
   @Test
   public void zeroStocksShouldBeEmpty() throws Exception{
-    Stock zeroStock = Stock.zero();
+    StockEntity zeroStock = StockEntity.zero();
 
     boolean isStockEmpty = zeroStock.isEmpty();
     AssertionsForClassTypes.assertThat(isStockEmpty)
@@ -22,8 +22,8 @@ public class StockTest {
 
   @Test
   public void stockWithOneOrMoreThanOneIsNotEmpty() throws Exception{
-    Stock singleStock = Stock.ofQuantity(1);
-    Stock moreThanOneStock = Stock.ofQuantity(100);
+    StockEntity singleStock = StockEntity.ofQuantity(1);
+    StockEntity moreThanOneStock = StockEntity.ofQuantity(100);
 
     boolean isSingleStockEmpty = singleStock.isEmpty();
     boolean isMultipleStockEmpty = moreThanOneStock.isEmpty();
@@ -40,7 +40,7 @@ public class StockTest {
   @ParameterizedTest
   @ValueSource(ints = {-11, -1, -999, -2, -312})
   public void invalidStock(int invalidStockQuantity) throws Exception{
-    ThrowableAssert.ThrowingCallable invalidStockConstruction = () -> Stock.ofQuantity(invalidStockQuantity);
+    ThrowableAssert.ThrowingCallable invalidStockConstruction = () -> StockEntity.ofQuantity(invalidStockQuantity);
 
     AssertionsForClassTypes.assertThatThrownBy(invalidStockConstruction)
         .isInstanceOf(InvalidStockQuantity.class)

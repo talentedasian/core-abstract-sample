@@ -1,19 +1,19 @@
 package com.example.demo.demo;
 
-public record Stock(int quantity) {
+public record StockEntity(int quantity) {
 
-  public Stock {
+  public StockEntity {
     if (quantity < 0){
       throw new InvalidStockQuantity();
     }
   }
 
-  public static Stock zero() {
-    return new Stock(0);
+  public static StockEntity zero() {
+    return new StockEntity(0);
   }
 
-  public static Stock ofQuantity(int quantity) {
-    return new Stock(quantity);
+  public static StockEntity ofQuantity(int quantity) {
+    return new StockEntity(quantity);
   }
 
   public boolean isEmpty() {

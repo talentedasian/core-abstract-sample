@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.demo.StockService;
-import com.example.demo.dto.out.StockDTO;
-import lombok.RequiredArgsConstructor;
+import com.example.demo.dto.out.Stock;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/")
 public class StockController {
 
-  @GetMapping(path = "stock")
-  public ResponseEntity<StockDTO> totalStockOnShop() {
+  private final StockService stockService;
 
-    return ResponseEntity.ok(new StockService().retrieveStock());
+  public StockController(StockService stockService) {
+    this.stockService = stockService;
+  }
+
+  @GetMapping(path = "stock")
+  public ResponseEntity<Stock> totalStockOnShop() {
+
+    return ResponseEntity.ok(stockService.retrieveStock());
 
   }
 

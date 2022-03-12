@@ -1,18 +1,27 @@
 package com.example.demo.demo;
 
-import com.example.demo.dto.out.StockDTO;
+import com.example.demo.dto.out.Stock;
+import com.example.demo.dto.out.Stock.StockState;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StockService {
 
-  public StockDTO retrieveStock() {
-    Stock stock = Stock.zero();
+  private final StockEntityRepository stockRepo;
+
+  public StockService(StockEntityRepository stockRepo) {
+    this.stockRepo = stockRepo;
+  }
+
+  public Stock retrieveStock() {
+    StockEntity stock = stockRepo.retrieveStock();
 
     if (stock.isFull()) {
-      return new StockDTO("FULL");
+      return new Stock(StockState.FULL);
     }
 
-    String nonFullStock = stock.isEmpty() ? "EMPTY" : "SOME";
-    return new StockDTO(nonFullStock);
+    var nonFullStock = stock.isEmpty() ? StockState.EMPTY : StockState.SOME;
+    return new Stock(nonFullStock);
   }
 
 }
