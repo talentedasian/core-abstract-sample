@@ -11,6 +11,8 @@ public abstract class AbstractShoeCore implements ShoeCore {
 
   @Autowired
   private ShoeFacade shoeFacade;
+  @Autowired
+  ShoeRepository shoeRepo;
 
   @PostConstruct
   void init(){
