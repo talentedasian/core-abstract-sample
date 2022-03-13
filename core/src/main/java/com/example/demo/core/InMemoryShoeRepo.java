@@ -1,12 +1,14 @@
 package com.example.demo.core;
 
 import com.example.demo.dto.in.ShoeFilter;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 // todo : better exception handling of optional values
+@Component
 public class InMemoryShoeRepo implements ShoeRepository {
 
   Map<String, ShoeEntity> db = new HashMap<>();
@@ -19,7 +21,7 @@ public class InMemoryShoeRepo implements ShoeRepository {
   @Override
   public List<ShoeEntity> search(ShoeFilter shoeFilter) {
     return db.values().stream()
-        .filter(shoe -> shoe.getColor() == shoeFilter.getColor().get()
+        .filter(shoe -> shoe.getColor().equals(shoeFilter.getColor().get().toString())
             && shoe.getSize() == shoeFilter.getSize().get().intValueExact())
         .toList();
   }
