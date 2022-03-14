@@ -64,13 +64,16 @@ public class StockService {
 
   @Transactional
   public Stock addShoe(ShoeToStock shoeStock) {
+    int totalStock = shoeRepository.totalStock();
+    int finalTotalStock = totalStock + shoeStock.getQuantity();
+    totalShoesQuantityOverflowStockCheck(finalTotalStock);
     ShoeEntity shoeEntity = new ShoeEntity(ShoeFilter.Color.valueOf(shoeStock.getColor()),
         shoeStock.getQuantity(),
         shoeStock.getSize(),
         shoeStock.getName());
     shoeRepository.save(shoeEntity);
 
-    StockEntity stockEntity = new StockEntity(shoeRepository.totalStock());
+    StockEntity stockEntity = new StockEntity(finalTotalStock);
     return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(List.of(shoeEntity)));
   }
 
@@ -80,7 +83,8 @@ public class StockService {
     int totalStockToAdd = shoes.stream().mapToInt(ShoeToStock::getQuantity).sum();
 
     sizeOfListOverflowStockCheck(totalStock, shoes);
-    totalShoesQuantityOverflowStockCheck(totalStock, totalStockToAdd);
+    int finalTotalStock = totalStock + totalStockToAdd;
+    totalShoesQuantityOverflowStockCheck(finalTotalStock);
 
     List<ShoeEntity> shoeEntities = shoes.stream()
         .map(shoe -> new ShoeEntity(ShoeFilter.Color.valueOf(shoe.getColor()),
@@ -90,14 +94,13 @@ public class StockService {
         .toList();
     shoeRepository.saveAll(shoeEntities);
 
-    StockEntity stockEntity = new StockEntity(totalStock + totalStockToAdd);
+    StockEntity stockEntity = new StockEntity(finalTotalStock);
     return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(shoeEntities));
   }
 
-  private void totalShoesQuantityOverflowStockCheck(int totalStock, int totalStockToAdd) {
-    int total = totalStockToAdd + totalStock;
-    boolean willTotalQuantityOverflowMaxStock = !StockEntity.isBelowFull(total);
-    maxStockCheck(willTotalQuantityOverflowMaxStock, total);
+  private void totalShoesQuantityOverflowStockCheck(int totalStock) {
+    boolean willTotalQuantityOverflowMaxStock = !StockEntity.isBelowFull(totalStock);
+    maxStockCheck(willTotalQuantityOverflowMaxStock, totalStock);
   }
 
   private void sizeOfListOverflowStockCheck(int totalStock, List<ShoeToStock> shoes) {

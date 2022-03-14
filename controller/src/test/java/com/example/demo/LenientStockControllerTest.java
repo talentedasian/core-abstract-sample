@@ -76,7 +76,7 @@ public class LenientStockControllerTest {
   }
 
   @Test
-  public void maxStockOverflowWhenAddingShoe() throws Exception{
+  public void maxStockOverflowWhenAddingShoes() throws Exception{
     shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 20, 10, "Lincoln"));
 
     String name = "Crocs";
