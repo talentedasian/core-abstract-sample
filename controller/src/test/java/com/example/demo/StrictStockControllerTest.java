@@ -21,8 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static java.net.URI.create;
 import static org.hamcrest.CoreMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,8 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class StrictStockControllerTest {
 
   @Autowired MockMvc mvc;
-  @Autowired
-  ShoeRepository shoeRepo;
+  @Autowired ShoeRepository shoeRepo;
 
   @BeforeEach
   public void setup() {
@@ -97,7 +95,7 @@ public class StrictStockControllerTest {
         }
         """.formatted(name, size, quantity, color);
 
-    mvc.perform(patch(create("/stock"))
+    mvc.perform(post(create("/stock"))
             .header("version", 1)
             .content(reqContent)
             .contentType(MediaType.APPLICATION_JSON))
@@ -125,7 +123,7 @@ public class StrictStockControllerTest {
         }
         """.formatted(name, size, quantity, color);
 
-    mvc.perform(patch(create("/stock"))
+    mvc.perform(post(create("/stock"))
             .header("version", 1)
             .content(reqContent)
             .contentType(MediaType.APPLICATION_JSON))

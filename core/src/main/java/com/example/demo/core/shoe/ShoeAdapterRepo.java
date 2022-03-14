@@ -49,10 +49,12 @@ public class ShoeAdapterRepo implements ShoeRepository {
 
   @Override
   public ShoeEntity update(ShoeToUpdate shoe) {
-    ShoeEntity shoeEntity = shoeRepo.getById(shoe.getName());
-    shoeEntity.setAvailableStock(shoe.getQuantity());
+    String id = shoe.getName();
+    if (shoeRepo.existsById(id)) {
+      shoeRepo.update(id, shoe.getQuantity());
+      return shoeRepo.findById(id).get();
+    }
 
-    shoeRepo.save(shoeEntity);
-    return shoeEntity;
+    throw new IllegalStateException();
   }
 }

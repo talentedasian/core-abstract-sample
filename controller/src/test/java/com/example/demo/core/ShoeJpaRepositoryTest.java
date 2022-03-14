@@ -26,4 +26,17 @@ public class ShoeJpaRepositoryTest {
         .isEqualTo(shoeToSave);
   }
 
+  @Test
+  public void updateShoe() throws Exception{
+    String name = "Lincoln";
+    repo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 30, 8, name));
+    int quantityToUpdate = 10;
+    repo.update(name, quantityToUpdate);
+
+    ShoeEntity shoeQueried = repo.findById(name).get();
+
+    assertThat(shoeQueried.getAvailableStock())
+        .isEqualTo(quantityToUpdate);
+  }
+
 }

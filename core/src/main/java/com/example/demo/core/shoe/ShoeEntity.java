@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "shoe")
 public class ShoeEntity {
 
   @Id

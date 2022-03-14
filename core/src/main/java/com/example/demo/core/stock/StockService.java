@@ -118,6 +118,7 @@ public class StockService {
     }
   }
 
+  @Transactional
   public Stock updateStock(ShoeToUpdate shoe) {
     int totalStock = shoeRepository.totalStock();
     int finalTotal = shoe.getQuantity() + totalStock;

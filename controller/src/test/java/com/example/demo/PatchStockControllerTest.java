@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static java.net.URI.create;
+import static org.hamcrest.CoreMatchers.containsStringIgnoringCase;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -24,7 +25,7 @@ public class PatchStockControllerTest {
   @Autowired ShoeRepository shoeRepo;
 
   @Test
-  public void addAvailableStockOnExistingShoe() throws Exception {
+  public void updateAvailableStockOnExistingShoe() throws Exception {
     String name = "Flops";
     shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 20, 10, name));
 
@@ -42,6 +43,27 @@ public class PatchStockControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("shoes[0].quantity", equalTo(quantityToUpdate)));
+  }
+
+  @Test
+  public void overflowingUpdateOnAvailableStockOnExistingShoe() throws Exception {
+    String name = "Flops";
+    shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 20, 10, name));
+
+    int quantityToUpdate = 20;
+    String reqContent = """
+        {
+          "name": "%s",
+          "quantity": %s
+        }
+        """.formatted(name, quantityToUpdate);
+
+    mvc.perform(patch(create("/stock"))
+            .header("version", 1)
+            .content(reqContent)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("reason", containsStringIgnoringCase("total stock if request is processed is 40")));
   }
 
 }
