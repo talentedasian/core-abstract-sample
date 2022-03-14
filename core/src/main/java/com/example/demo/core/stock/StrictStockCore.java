@@ -1,15 +1,12 @@
-package com.example.demo.core;
+package com.example.demo.core.stock;
 
+import com.example.demo.core.Implementation;
+import com.example.demo.core.stock.AbstractStockCore;
 import com.example.demo.dto.in.ShoeFilter;
 import com.example.demo.dto.in.ShoeToStock;
 import com.example.demo.dto.out.*;
 
-import javax.transaction.NotSupportedException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Implementation(version = 1)
 public class StrictStockCore extends AbstractStockCore {

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.core.StockFacade;
+import com.example.demo.core.stock.StockFacade;
 import com.example.demo.dto.in.ShoeFilter;
 import com.example.demo.dto.in.ShoeToStock;
 import com.example.demo.dto.out.Stock;

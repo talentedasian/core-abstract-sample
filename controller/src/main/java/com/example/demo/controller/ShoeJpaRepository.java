@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.core.ShoeEntity;
+import com.example.demo.core.shoe.ShoeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

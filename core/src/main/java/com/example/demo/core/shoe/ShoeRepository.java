@@ -1,7 +1,7 @@
-package com.example.demo.core;
+package com.example.demo.core.shoe;
 
+import com.example.demo.core.shoe.ShoeEntity;
 import com.example.demo.dto.in.ShoeFilter;
-import com.example.demo.dto.in.ShoeToStock;
 
 import java.util.List;
 

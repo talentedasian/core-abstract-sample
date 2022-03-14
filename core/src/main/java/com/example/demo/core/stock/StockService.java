@@ -1,5 +1,7 @@
-package com.example.demo.core;
+package com.example.demo.core.stock;
 
+import com.example.demo.core.shoe.ShoeEntity;
+import com.example.demo.core.shoe.ShoeRepository;
 import com.example.demo.dto.in.ShoeFilter;
 import com.example.demo.dto.in.ShoeToStock;
 import com.example.demo.dto.out.ShoeModel;

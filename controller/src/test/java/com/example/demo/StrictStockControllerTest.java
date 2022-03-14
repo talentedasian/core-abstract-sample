@@ -1,22 +1,23 @@
 package com.example.demo;
 
 import com.example.demo.controller.StockController;
-import com.example.demo.core.*;
+import com.example.demo.core.shoe.InMemoryShoeRepo;
+import com.example.demo.core.shoe.ShoeEntity;
+import com.example.demo.core.shoe.ShoeRepository;
+import com.example.demo.core.stock.StockFacade;
+import com.example.demo.core.stock.StockService;
+import com.example.demo.core.stock.StrictStockCore;
 import com.example.demo.dto.in.ShoeFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.net.URI;
 
 import static java.net.URI.create;
 import static org.hamcrest.CoreMatchers.*;
@@ -31,7 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class StrictStockControllerTest {
 
   @Autowired MockMvc mvc;
-  @Autowired ShoeRepository shoeRepo;
+  @Autowired
+  ShoeRepository shoeRepo;
 
   @BeforeEach
   public void setup() {

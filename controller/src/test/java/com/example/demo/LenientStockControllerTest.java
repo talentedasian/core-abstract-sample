@@ -1,7 +1,12 @@
 package com.example.demo;
 
 import com.example.demo.controller.StockController;
-import com.example.demo.core.*;
+import com.example.demo.core.shoe.InMemoryShoeRepo;
+import com.example.demo.core.shoe.ShoeEntity;
+import com.example.demo.core.shoe.ShoeRepository;
+import com.example.demo.core.stock.LenientStockCore;
+import com.example.demo.core.stock.StockFacade;
+import com.example.demo.core.stock.StockService;
 import com.example.demo.dto.in.ShoeFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +18,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static java.net.URI.create;
 import static org.hamcrest.CoreMatchers.*;
@@ -27,7 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LenientStockControllerTest {
 
   @Autowired MockMvc mvc;
-  @Autowired ShoeRepository shoeRepo;
+  @Autowired
+  ShoeRepository shoeRepo;
 
   @BeforeEach
   public void setup() {

@@ -1,5 +1,6 @@
-package com.example.demo.core;
+package com.example.demo.core.stock;
 
+import com.example.demo.core.Implementation;
 import com.example.demo.dto.in.ShoeToStock;
 import com.example.demo.dto.out.Stock;
 import lombok.val;
@@ -11,8 +12,10 @@ import java.util.Optional;
 
 public abstract class AbstractStockCore implements StockCore {
 
-  @Autowired StockFacade stockFacade;
-  @Autowired StockService stockService;
+  @Autowired
+  StockFacade stockFacade;
+  @Autowired
+  StockService stockService;
 
   @PostConstruct
   void init(){

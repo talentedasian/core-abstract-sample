@@ -1,5 +1,6 @@
-package com.example.demo.core;
+package com.example.demo.core.shoe;
 
+import com.example.demo.core.Implementation;
 import com.example.demo.facade.ShoeFacade;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
@@ -12,7 +13,7 @@ public abstract class AbstractShoeCore implements ShoeCore {
   @Autowired
   private ShoeFacade shoeFacade;
   @Autowired
-  ShoeRepository shoeRepo;
+  protected ShoeRepository shoeRepo;
 
   @PostConstruct
   void init(){

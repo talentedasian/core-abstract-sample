@@ -1,4 +1,4 @@
-package com.example.demo.core;
+package com.example.demo.core.shoe;
 
 import com.example.demo.dto.in.ShoeFilter.Color;
 import com.example.demo.dto.out.Shoe;

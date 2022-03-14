@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.core.ShoeEntity;
-import com.example.demo.core.ShoeRepository;
+import com.example.demo.core.shoe.ShoeEntity;
+import com.example.demo.core.shoe.ShoeRepository;
 import com.example.demo.dto.in.ShoeFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

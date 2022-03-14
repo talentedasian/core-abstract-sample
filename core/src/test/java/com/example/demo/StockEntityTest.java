@@ -1,8 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.core.InvalidStockQuantity;
-import com.example.demo.core.StockEntity;
-import com.example.demo.core.StockOverflowException;
+import com.example.demo.core.stock.InvalidStockQuantity;
+import com.example.demo.core.stock.StockEntity;
+import com.example.demo.core.stock.StockOverflowException;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

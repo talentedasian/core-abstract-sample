@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.core.StockOverflowException;
+import com.example.demo.core.stock.StockOverflowException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
