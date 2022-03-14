@@ -36,8 +36,15 @@ public class ShoeAdapterRepo implements ShoeRepository {
   }
 
   @Override
-  public int count() {
-    // max of 30 for global stock makes it sure that no narrow casting will happen
-    return (int) shoeRepo.count();
+  public int totalStock() {
+    // todo : replace with better query
+    return shoeRepo.findAll().stream()
+        .mapToInt(ShoeEntity::getAvailableStock)
+        .sum();
+  }
+
+  @Override
+  public void saveAll(List<ShoeEntity> shoes) {
+    shoeRepo.saveAll(shoes);
   }
 }

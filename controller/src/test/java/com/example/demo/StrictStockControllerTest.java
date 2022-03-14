@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 
@@ -23,15 +24,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
+@Transactional
 public class StrictStockControllerTest {
 
   @Autowired MockMvc mvc;
   @Autowired ShoeRepository shoeRepo;
-
-  @BeforeEach
-  public void setup() {
-    shoeRepo.deleteAll();
-  }
 
   @Test
   public void emptyStock() throws Exception{

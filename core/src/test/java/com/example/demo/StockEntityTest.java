@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.core.InvalidStockQuantity;
 import com.example.demo.core.StockEntity;
+import com.example.demo.core.StockOverflowException;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -64,8 +65,7 @@ public class StockEntityTest {
     ThrowableAssert.ThrowingCallable invalidStockConstruction = () -> StockEntity.ofQuantity(quantityMoreThan30);
 
     assertThatThrownBy(invalidStockConstruction)
-        .isInstanceOf(InvalidStockQuantity.class)
-        .hasMessageContaining("cannot go over 30");
+        .isInstanceOf(StockOverflowException.class);
   }
 
 }

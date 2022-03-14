@@ -1,6 +1,7 @@
 package com.example.demo.core;
 
 import com.example.demo.dto.in.ShoeFilter;
+import com.example.demo.dto.in.ShoeToStock;
 
 import java.util.List;
 
@@ -14,5 +15,7 @@ public interface ShoeRepository {
 
   void deleteAll();
 
-  int count();
+  int totalStock();
+
+  void saveAll(List<ShoeEntity> shoes);
 }

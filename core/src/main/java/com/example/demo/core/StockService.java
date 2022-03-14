@@ -7,6 +7,7 @@ import com.example.demo.dto.out.ShoesInStock;
 import com.example.demo.dto.out.Stock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +20,14 @@ public class StockService {
 
   private final ShoeRepository shoeRepository;
 
+  @Transactional(readOnly = true)
   public Stock fetchStock(ShoeFilter shoeFilter) {
-    StockEntity stockEntity = new StockEntity(totalStock());
+    StockEntity stockEntity = new StockEntity(shoeRepository.totalStock());
 
     List<ShoeEntity> shoes = shoeRepository.search(shoeFilter);
 
     Stock.StockState stockState = shoesStockState(stockEntity);
     return new Stock(stockState, shoesGroupedByColor(shoes));
-  }
-
-  private int totalStock() {
-    return shoeRepository.all().stream()
-        .mapToInt(ShoeEntity::getAvailableStock).sum();
   }
 
   private Stock.StockState shoesStockState(StockEntity stockEntity) {
@@ -55,6 +52,17 @@ public class StockService {
     return shoesByColors;
   }
 
+  @Transactional(readOnly = true)
+  public Stock allShoes() {
+    StockEntity stockEntity = new StockEntity(shoeRepository.totalStock());
+
+    List<ShoeEntity> shoes = shoeRepository.all();
+
+    Stock.StockState stockState = shoesStockState(stockEntity);
+    return new Stock(stockState, shoesGroupedByColor(shoes));
+  }
+
+  @Transactional
   public Stock addShoe(ShoeToStock shoeStock) {
     ShoeEntity shoeEntity = new ShoeEntity(ShoeFilter.Color.valueOf(shoeStock.getColor()),
         shoeStock.getQuantity(),
@@ -62,8 +70,45 @@ public class StockService {
         shoeStock.getName());
     shoeRepository.save(shoeEntity);
 
-    StockEntity stockEntity = new StockEntity(totalStock());
+    StockEntity stockEntity = new StockEntity(shoeRepository.totalStock());
     return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(List.of(shoeEntity)));
   }
 
+  @Transactional
+  public Stock addShoes(List<ShoeToStock> shoes) {
+    int totalStock = shoeRepository.totalStock();
+    int totalStockToAdd = shoes.stream().mapToInt(ShoeToStock::getQuantity).sum();
+
+    sizeOfListOverflowStockCheck(totalStock, shoes);
+    totalShoesQuantityOverflowStockCheck(totalStock, totalStockToAdd);
+
+    List<ShoeEntity> shoeEntities = shoes.stream()
+        .map(shoe -> new ShoeEntity(ShoeFilter.Color.valueOf(shoe.getColor()),
+            shoe.getQuantity(),
+            shoe.getSize(),
+            shoe.getName()))
+        .toList();
+    shoeRepository.saveAll(shoeEntities);
+
+    StockEntity stockEntity = new StockEntity(totalStock + totalStockToAdd);
+    return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(shoeEntities));
+  }
+
+  private void totalShoesQuantityOverflowStockCheck(int totalStock, int totalStockToAdd) {
+    int total = totalStockToAdd + totalStock;
+    boolean willTotalQuantityOverflowMaxStock = !StockEntity.isBelowFull(total);
+    maxStockCheck(willTotalQuantityOverflowMaxStock, total);
+  }
+
+  private void sizeOfListOverflowStockCheck(int totalStock, List<ShoeToStock> shoes) {
+    int total = totalStock + shoes.size();
+    boolean willListOfShoeModelsToAddOverflowMaxStock = !StockEntity.isBelowFull(total);
+    maxStockCheck(willListOfShoeModelsToAddOverflowMaxStock, total);
+  }
+
+  private void maxStockCheck(boolean willOverflowMaxStock, int totalStock) {
+    if (willOverflowMaxStock) {
+      throw new StockOverflowException(totalStock);
+    }
+  }
 }

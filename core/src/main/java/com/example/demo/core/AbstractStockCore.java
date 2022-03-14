@@ -1,5 +1,7 @@
 package com.example.demo.core;
 
+import com.example.demo.dto.in.ShoeToStock;
+import com.example.demo.dto.out.Stock;
 import lombok.val;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,11 @@ public abstract class AbstractStockCore implements StockCore {
 
     stockFacade.register(version, this);
 
+  }
+
+  @Override
+  public Stock addShoeToStock(ShoeToStock shoeStock) {
+    return stockService.addShoe(shoeStock);
   }
 
 }

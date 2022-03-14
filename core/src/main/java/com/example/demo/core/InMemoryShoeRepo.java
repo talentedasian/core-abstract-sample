@@ -1,7 +1,7 @@
 package com.example.demo.core;
 
 import com.example.demo.dto.in.ShoeFilter;
-import org.springframework.stereotype.Component;
+import com.example.demo.dto.in.ShoeToStock;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +36,17 @@ public class InMemoryShoeRepo implements ShoeRepository {
   }
 
   @Override
-  public int count() {
-    return db.values().size();
+  public int totalStock() {
+    return db.values().stream()
+        .mapToInt(ShoeEntity::getAvailableStock)
+        .sum();
+  }
+
+  @Override
+  public void saveAll(List<ShoeEntity> shoes) {
+    shoes.stream()
+        .forEach(shoe -> {
+          db.put(shoe.getName(), shoe);
+        });
   }
 }
