@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 // todo : better exception handling of optional values
-@Component
 public class InMemoryShoeRepo implements ShoeRepository {
 
   Map<String, ShoeEntity> db = new HashMap<>();
@@ -34,5 +33,10 @@ public class InMemoryShoeRepo implements ShoeRepository {
   @Override
   public void deleteAll() {
     db.clear();
+  }
+
+  @Override
+  public int count() {
+    return db.values().size();
   }
 }

@@ -19,11 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
-@Import({ InMemoryStockEntityRepo.class, InMemoryShoeRepo.class})
 public class StrictStockControllerTest {
 
   @Autowired MockMvc mvc;
-  @Autowired StockEntityRepository stockEntityRepo;
   @Autowired ShoeRepository shoeRepo;
 
   @BeforeEach
@@ -33,8 +31,6 @@ public class StrictStockControllerTest {
 
   @Test
   public void emptyStock() throws Exception{
-    stockEntityRepo.saveStock(new StockEntity(0));
-
     mvc.perform(get(create("/stock?color=BLACK&size=22"))
             .header("version", 1))
         .andExpect(status().isOk())
@@ -44,11 +40,14 @@ public class StrictStockControllerTest {
 
   @Test
   public void fullStock() throws Exception{
-    stockEntityRepo.saveStock(new StockEntity(30));
     int lincolnAvailableStock = 22;
-    shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, lincolnAvailableStock, lincolnAvailableStock, "Lincoln"));
+    // shoe to query
+    int size = 22;
+    shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, lincolnAvailableStock, size, "Lincoln"));
+    // just to make global stock to max, which is 30
+    shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 30-lincolnAvailableStock, 10, "Crocs"));
 
-    mvc.perform(get(create("/stock?color=BLACK&size=22"))
+    mvc.perform(get(create("/stock?color=BLACK&size=" + size))
             .header("version", 1))
         .andExpect(status().isOk())
         .andExpect(jsonPath("state", equalTo("FULL")))
@@ -61,7 +60,6 @@ public class StrictStockControllerTest {
   @Test
   public void someStock() throws Exception{
     int size = 12;
-    stockEntityRepo.saveStock(new StockEntity(12));
     int lincolnAvailableStock = 9;
     shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, lincolnAvailableStock, size, "Lincoln"));
 

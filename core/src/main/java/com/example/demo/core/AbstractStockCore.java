@@ -10,8 +10,7 @@ import java.util.Optional;
 public abstract class AbstractStockCore implements StockCore {
 
   @Autowired StockFacade stockFacade;
-  @Autowired ShoeRepository shoeRepo;
-  @Autowired StockEntityRepository stockRepo;
+  @Autowired StockService stockService;
 
   @PostConstruct
   void init(){
