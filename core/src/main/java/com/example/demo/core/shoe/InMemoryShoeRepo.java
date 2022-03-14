@@ -1,6 +1,7 @@
 package com.example.demo.core.shoe;
 
 import com.example.demo.dto.in.ShoeFilter;
+import com.example.demo.dto.in.ShoeToUpdate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,5 +48,18 @@ public class InMemoryShoeRepo implements ShoeRepository {
         .forEach(shoe -> {
           db.put(shoe.getName(), shoe);
         });
+  }
+
+  @Override
+  public ShoeEntity update(ShoeToUpdate shoe) {
+    String key = shoe.getName();
+    if (db.containsKey(key)) {
+      ShoeEntity shoeEntity = db.get(key);
+      shoeEntity.setAvailableStock(shoe.getQuantity());
+      db.put(key, shoeEntity);
+      return shoeEntity;
+    }
+
+    throw new IllegalStateException();
   }
 }

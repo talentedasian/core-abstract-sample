@@ -1,9 +1,8 @@
 package com.example.demo.core.stock;
 
 import com.example.demo.core.Implementation;
-import com.example.demo.core.stock.AbstractStockCore;
 import com.example.demo.dto.in.ShoeFilter;
-import com.example.demo.dto.in.ShoeToStock;
+import com.example.demo.dto.in.ShoeToUpdate;
 import com.example.demo.dto.out.Stock;
 
 import java.util.List;
@@ -21,8 +20,13 @@ public class LenientStockCore extends AbstractStockCore {
   }
 
   @Override
-  public Stock addShoesToStock(List<ShoeToStock> shoes) {
-    return stockService.addShoes(shoes);
+  public Stock updateShoeQuantity(ShoeToUpdate shoe) {
+    return stockService.updateStock(shoe);
+  }
+
+  @Override
+  public Stock updateShoesQuantity(List<ShoeToUpdate> shoe) {
+    return null;
   }
 
 }

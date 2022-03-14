@@ -1,9 +1,7 @@
 package com.example.demo.core.shoe;
 
-import com.example.demo.core.shoe.ShoeEntity;
-import com.example.demo.core.shoe.ShoeJpaRepository;
-import com.example.demo.core.shoe.ShoeRepository;
 import com.example.demo.dto.in.ShoeFilter;
+import com.example.demo.dto.in.ShoeToUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -47,5 +45,14 @@ public class ShoeAdapterRepo implements ShoeRepository {
   @Override
   public void saveAll(List<ShoeEntity> shoes) {
     shoeRepo.saveAll(shoes);
+  }
+
+  @Override
+  public ShoeEntity update(ShoeToUpdate shoe) {
+    ShoeEntity shoeEntity = shoeRepo.getById(shoe.getName());
+    shoeEntity.setAvailableStock(shoe.getQuantity());
+
+    shoeRepo.save(shoeEntity);
+    return shoeEntity;
   }
 }

@@ -1,9 +1,10 @@
 package com.example.demo.facade;
 
 import com.example.demo.core.shoe.ShoeCore;
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.stereotype.Component;
 
 @Component
 public class ShoeFacade {

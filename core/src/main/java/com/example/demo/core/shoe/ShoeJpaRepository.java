@@ -1,6 +1,5 @@
 package com.example.demo.core.shoe;
 
-import com.example.demo.core.shoe.ShoeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

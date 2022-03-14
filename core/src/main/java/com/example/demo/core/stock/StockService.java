@@ -4,6 +4,7 @@ import com.example.demo.core.shoe.ShoeEntity;
 import com.example.demo.core.shoe.ShoeRepository;
 import com.example.demo.dto.in.ShoeFilter;
 import com.example.demo.dto.in.ShoeToStock;
+import com.example.demo.dto.in.ShoeToUpdate;
 import com.example.demo.dto.out.ShoeModel;
 import com.example.demo.dto.out.ShoesInStock;
 import com.example.demo.dto.out.Stock;
@@ -115,5 +116,14 @@ public class StockService {
     if (willOverflowMaxStock) {
       throw new StockOverflowException(totalStock);
     }
+  }
+
+  public Stock updateStock(ShoeToUpdate shoe) {
+    int totalStock = shoeRepository.totalStock();
+    int finalTotal = shoe.getQuantity() + totalStock;
+    totalShoesQuantityOverflowStockCheck(finalTotal);
+
+    ShoeEntity updatedShoe = shoeRepository.update(shoe);
+    return new Stock(shoesStockState(new StockEntity(finalTotal)), shoesGroupedByColor(List.of(updatedShoe)));
   }
 }

@@ -1,8 +1,9 @@
 package com.example.demo.dto.in;
 
+import lombok.Value;
+
 import java.math.BigInteger;
 import java.util.Optional;
-import lombok.Value;
 
 @Value
 public class ShoeFilter {
