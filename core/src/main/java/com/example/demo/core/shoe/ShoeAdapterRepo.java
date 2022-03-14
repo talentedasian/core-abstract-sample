@@ -1,6 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.core.shoe;
 
 import com.example.demo.core.shoe.ShoeEntity;
+import com.example.demo.core.shoe.ShoeJpaRepository;
 import com.example.demo.core.shoe.ShoeRepository;
 import com.example.demo.dto.in.ShoeFilter;
 import lombok.RequiredArgsConstructor;

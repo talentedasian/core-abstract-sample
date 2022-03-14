@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigInteger;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -36,4 +37,25 @@ public class ShoeEntity {
         .build();
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    ShoeEntity that = (ShoeEntity) o;
+
+    if (availableStock != that.availableStock) return false;
+    if (size != that.size) return false;
+    if (!Objects.equals(name, that.name)) return false;
+    return Objects.equals(color, that.color);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = name != null ? name.hashCode() : 0;
+    result = 31 * result + (color != null ? color.hashCode() : 0);
+    result = 31 * result + availableStock;
+    result = 31 * result + size;
+    return result;
+  }
 }

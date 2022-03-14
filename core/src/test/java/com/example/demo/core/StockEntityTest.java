@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.core;
 
 import com.example.demo.core.stock.InvalidStockQuantity;
 import com.example.demo.core.stock.StockEntity;

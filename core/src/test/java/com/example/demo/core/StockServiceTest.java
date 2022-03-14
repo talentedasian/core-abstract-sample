@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.core;
 
 import com.example.demo.core.shoe.InMemoryShoeRepo;
 import com.example.demo.core.shoe.ShoeEntity;
