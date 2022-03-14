@@ -20,4 +20,10 @@ public interface ShoeRepository {
   void saveAll(List<ShoeEntity> shoes);
 
   ShoeEntity update(ShoeToUpdate shoe);
+
+  boolean containsShoe(String name);
+
+  List<ShoeEntity> updateAll(List<ShoeToUpdate> shoes);
+
+  int totalStockExcept(List<ShoeToUpdate> shoes);
 }

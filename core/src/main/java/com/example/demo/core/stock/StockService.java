@@ -80,33 +80,12 @@ public class StockService {
     return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(List.of(shoeEntity)));
   }
 
-  @Transactional
-  public Stock addShoes(List<ShoeToStock> shoes) {
-    int totalStock = shoeRepository.totalStock();
-    int totalStockToAdd = shoes.stream().mapToInt(ShoeToStock::getQuantity).sum();
-
-    sizeOfListOverflowStockCheck(totalStock, shoes);
-    int finalTotalStock = totalStock + totalStockToAdd;
-    totalShoesQuantityOverflowStockCheck(finalTotalStock);
-
-    List<ShoeEntity> shoeEntities = shoes.stream()
-        .map(shoe -> new ShoeEntity(ShoeFilter.Color.valueOf(shoe.getColor()),
-            shoe.getQuantity(),
-            shoe.getSize(),
-            shoe.getName()))
-        .toList();
-    shoeRepository.saveAll(shoeEntities);
-
-    StockEntity stockEntity = new StockEntity(finalTotalStock);
-    return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(shoeEntities));
-  }
-
   private void totalShoesQuantityOverflowStockCheck(int totalStock) {
     boolean willTotalQuantityOverflowMaxStock = !StockEntity.isBelowFull(totalStock);
     maxStockCheck(willTotalQuantityOverflowMaxStock, totalStock);
   }
 
-  private void sizeOfListOverflowStockCheck(int totalStock, List<ShoeToStock> shoes) {
+  private void sizeOfListOverflowStockCheck(int totalStock, List shoes) {
     int total = totalStock + shoes.size();
     boolean willListOfShoeModelsToAddOverflowMaxStock = !StockEntity.isBelowFull(total);
     maxStockCheck(willListOfShoeModelsToAddOverflowMaxStock, total);
@@ -120,11 +99,36 @@ public class StockService {
 
   @Transactional
   public Stock updateStock(ShoeToUpdate shoe) {
-    int totalStock = shoeRepository.totalStock();
+    int totalStock = shoeRepository.totalStockExcept(List.of(shoe));
     int finalTotal = shoe.getQuantity() + totalStock;
     totalShoesQuantityOverflowStockCheck(finalTotal);
 
     ShoeEntity updatedShoe = shoeRepository.update(shoe);
-    return new Stock(shoesStockState(new StockEntity(finalTotal)), shoesGroupedByColor(List.of(updatedShoe)));
+    return new Stock(shoesStockState(new StockEntity(finalTotal)), shoesGroupedByColor  (List.of(updatedShoe)));
   }
+
+  @Transactional
+  public Stock updateMultipleStock(List<ShoeToUpdate> shoes) {
+    int totalStock = shoeRepository.totalStockExcept(shoes);
+    int totalStockToAdd = shoes.stream().mapToInt(ShoeToUpdate::getQuantity).sum();
+
+    sizeOfListOverflowStockCheck(totalStock, shoes);
+    int finalTotalStock = totalStock + totalStockToAdd;
+    // asserts whether stocks from multiple shoes will still be within the limit
+    totalShoesQuantityOverflowStockCheck(finalTotalStock);
+
+    checkIfAllShoesExist(shoes);
+
+    List<ShoeEntity> shoeEntities = shoeRepository.updateAll(shoes);
+    StockEntity stockEntity = new StockEntity(finalTotalStock);
+    return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(shoeEntities));
+  }
+
+  private void checkIfAllShoesExist(List<ShoeToUpdate> shoe) {
+    shoe.stream()
+        .forEach(sh -> {
+          shoeRepository.containsShoe(sh.getName());
+        });
+  }
+
 }

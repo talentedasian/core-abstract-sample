@@ -3,6 +3,7 @@ package com.example.demo.core.shoe;
 import com.example.demo.dto.in.ShoeFilter;
 import com.example.demo.dto.in.ShoeToUpdate;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,40 @@ public class InMemoryShoeRepo implements ShoeRepository {
       return shoeEntity;
     }
 
-    throw new IllegalStateException();
+    throw new ShoeNotFoundException();
+  }
+
+  @Override
+  public boolean containsShoe(String name) {
+    return db.containsKey(name);
+  }
+
+  @Override
+  public List<ShoeEntity> updateAll(List<ShoeToUpdate> shoes) {
+    shoes.stream()
+        .forEach(shoe -> update(shoe));
+
+    return shoes.stream()
+        .map(shoe -> {
+          ShoeEntity shoeEntity = db.get(shoe.getName());
+          shoeEntity.setAvailableStock(shoe.getQuantity());
+          return shoeEntity;
+        })
+        .toList();
+  }
+
+  @Override
+  public int totalStockExcept(List<ShoeToUpdate> shoes) {
+    Collection<ShoeEntity> shoeEntities = db.values();
+    shoeEntities.forEach(shoeEntity -> {
+      shoes.stream()
+          .forEach(shoe -> {
+            if (shoeEntity.getName().equals(shoe.getName())) {
+              shoeEntities.remove(shoeEntity);
+            }
+          });
+    });
+
+    return shoeEntities.stream().mapToInt(ShoeEntity::getAvailableStock).sum();
   }
 }

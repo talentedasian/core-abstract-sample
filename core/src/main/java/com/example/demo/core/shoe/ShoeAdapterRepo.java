@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Repository
 @RequiredArgsConstructor
@@ -55,6 +56,31 @@ public class ShoeAdapterRepo implements ShoeRepository {
       return shoeRepo.findById(id).get();
     }
 
-    throw new IllegalStateException();
+    throw new ShoeNotFoundException();
+  }
+
+  @Override
+  public boolean containsShoe(String name) {
+    return shoeRepo.existsById(name);
+  }
+
+  @Override
+  public List<ShoeEntity> updateAll(List<ShoeToUpdate> shoes) {
+    List<ShoeEntity> shoesToUpdate = shoeRepo.findByNameIn(shoes.stream().map(ShoeToUpdate::getName).toList());
+
+    IntStream.range(0, shoes.size()).forEach(i -> {
+      shoesToUpdate.get(i).setAvailableStock(shoes.get(i).getQuantity());
+    });
+
+    shoeRepo.saveAll(shoesToUpdate);
+    return shoesToUpdate;
+  }
+
+  @Override
+  public int totalStockExcept(List<ShoeToUpdate> shoes) {
+    // todo : better query
+    return shoeRepo.findByNameNotIn(shoes.stream().map(ShoeToUpdate::getName).toList()).stream()
+        .mapToInt(ShoeEntity::getAvailableStock)
+        .sum();
   }
 }

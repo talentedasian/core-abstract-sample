@@ -41,7 +41,7 @@ public class StockController {
   }
 
   @PatchMapping(path = "stocks")
-  public ResponseEntity<Stock> addShoeToGlobalStock(@Valid @RequestBody List<ShoeToUpdate> shoe) {
+  public ResponseEntity<Stock> addShoesToGlobalStock(@Valid @RequestBody List<ShoeToUpdate> shoe) {
 
     return ResponseEntity.ok(stockFacade.get(2).updateShoesQuantity(shoe));
 

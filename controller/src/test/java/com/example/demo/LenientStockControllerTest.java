@@ -32,53 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LenientStockControllerTest {
 
   @Autowired MockMvc mvc;
-  @Autowired
-  ShoeRepository shoeRepo;
+  @Autowired ShoeRepository shoeRepo;
 
   @BeforeEach
   public void setup() {
     shoeRepo.deleteAll();
-  }
-
-  @Test
-  public void addShoesToStock() throws Exception{
-    String crocs = "Crocs";
-    int crocsSize = 1;
-    int crocsQuantity = 10;
-    String nike = "Nike";
-    int nikeSize = 12;
-    int nikeQuantity = 20;
-    String color = "BLACK";
-    String reqContent = """
-        [
-          {
-            "name": "%s",
-            "size": %s,
-            "quantity": %s,
-            "color": "%s"
-          },
-          {
-            "name": "%s",
-            "size": %s,
-            "quantity": %s,
-            "color": "%s"
-          }
-        ]
-        """.formatted(crocs, crocsSize, crocsQuantity, color, nike, nikeSize, nikeQuantity, color);
-
-    mvc.perform(patch(create("/stocks"))
-            .header("version", 2)
-            .content(reqContent)
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("state", equalTo("FULL")))
-        .andExpect(jsonPath("shoes[0].color", equalTo(color)))
-        .andExpect(jsonPath("shoes[0].quantity", equalTo(crocsQuantity + nikeQuantity)))
-        .andExpect(jsonPath("shoes[0].models[0].shoe.size", equalTo(crocsSize)))
-        .andExpect(jsonPath("shoes[0].models[0].quantity", equalTo(crocsQuantity)))
-        .andExpect(jsonPath("shoes[0].color", equalTo(color)))
-        .andExpect(jsonPath("shoes[0].models[1].shoe.size", equalTo(nikeSize)))
-        .andExpect(jsonPath("shoes[0].models[1].quantity", equalTo(nikeQuantity)));
   }
 
   @Test

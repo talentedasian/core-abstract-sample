@@ -16,4 +16,7 @@ public interface ShoeJpaRepository extends JpaRepository<ShoeEntity, String> {
   @Modifying(clearAutomatically = true, flushAutomatically = true)
   void update(String name, int stockQuantity);
 
+  List<ShoeEntity> findByNameIn(List<String> names);
+
+  List<ShoeEntity> findByNameNotIn(List<String> names);
 }

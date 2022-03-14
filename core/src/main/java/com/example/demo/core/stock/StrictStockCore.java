@@ -22,7 +22,7 @@ public class StrictStockCore extends AbstractStockCore {
 
   @Override
   public Stock updateShoesQuantity(List<ShoeToUpdate> shoe) {
-    return null;
+    return stockService.updateMultipleStock(shoe);
   }
 
 }

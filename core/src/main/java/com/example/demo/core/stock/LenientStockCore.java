@@ -25,8 +25,8 @@ public class LenientStockCore extends AbstractStockCore {
   }
 
   @Override
-  public Stock updateShoesQuantity(List<ShoeToUpdate> shoe) {
-    return null;
+  public Stock updateShoesQuantity(List<ShoeToUpdate> shoes) {
+    return stockService.updateMultipleStock(shoes);
   }
 
 }

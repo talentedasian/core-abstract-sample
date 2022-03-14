@@ -1,21 +1,32 @@
 package com.example.demo.controller;
 
+import com.example.demo.core.shoe.ShoeNotFoundException;
 import com.example.demo.core.stock.StockOverflowException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class StockExceptionHandling {
+public class StockExceptionHandling extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(StockOverflowException.class)
   public ResponseEntity<ExceptionMessage> handleStockOverflow(StockOverflowException e) {
     int totalStock = e.totalStock();
     var reason = new ExceptionMessage("Maximum stock quantity is 30. Total stock if request is processed is " + totalStock);
 
+    return new ResponseEntity<ExceptionMessage>(reason, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(ShoeNotFoundException.class)
+  public ResponseEntity<ExceptionMessage> handleShoeNotFoundForUpdates(ShoeNotFoundException e) {
+    var reason = new ExceptionMessage("Could not update non existing shoe");
     return new ResponseEntity<ExceptionMessage>(reason, HttpStatus.CONFLICT);
   }
 
