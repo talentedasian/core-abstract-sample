@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.in.ShoeFilter;
-import com.example.demo.dto.in.ShoeStock;
+import com.example.demo.dto.in.ShoeToStock;
 import com.example.demo.dto.out.Shoe;
 import com.example.demo.dto.out.Shoes;
 import com.example.demo.facade.ShoeFacade;
@@ -22,11 +22,6 @@ public class ShoeController {
 
     return ResponseEntity.ok(shoeFacade.get(version).search(filter));
 
-  }
-
-  @PostMapping(path = "save")
-  public ResponseEntity<Shoe> addShoeInStock(@RequestBody ShoeStock shoe) {
-    return ResponseEntity.ok(shoeFacade.get(2).addShoe(shoe));
   }
 
 }

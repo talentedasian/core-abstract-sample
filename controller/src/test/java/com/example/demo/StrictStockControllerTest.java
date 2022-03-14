@@ -8,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.net.URI;
 
 import static java.net.URI.create;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,6 +73,32 @@ public class StrictStockControllerTest {
         .andExpect(jsonPath("state", equalTo("SOME")))
         .andExpect(jsonPath("shoes[0].color", equalTo("BLACK")))
         .andExpect(jsonPath("shoes[0].quantity", equalTo(lincolnAvailableStock)));
+  }
+
+  @Test
+  public void addShoeToStock() throws Exception{
+    String name = "Crocs";
+    int size = 1;
+    int quantity = 10;
+    String color = "BLACK";
+    String reqContent = """
+        {
+          "name": "%s",
+          "size": %s,
+          "quantity": %s,
+          "color": "%s"
+        }
+        """.formatted(name, size, quantity, color);
+
+    mvc.perform(patch(create("/stock"))
+            .header("version", 1)
+            .content(reqContent)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("state", equalTo("SOME")))
+        .andExpect(jsonPath("shoes[0].color", equalTo(color)))
+        .andExpect(jsonPath("shoes[0].quantity", equalTo(quantity)))
+        .andExpect(jsonPath("shoes[0].models[0].shoe.size", equalTo(size)));
   }
 
 }

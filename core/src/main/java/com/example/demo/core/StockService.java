@@ -1,6 +1,7 @@
 package com.example.demo.core;
 
 import com.example.demo.dto.in.ShoeFilter;
+import com.example.demo.dto.in.ShoeToStock;
 import com.example.demo.dto.out.ShoeModel;
 import com.example.demo.dto.out.ShoesInStock;
 import com.example.demo.dto.out.Stock;
@@ -52,6 +53,17 @@ public class StockService {
     });
 
     return shoesByColors;
+  }
+
+  public Stock addShoe(ShoeToStock shoeStock) {
+    ShoeEntity shoeEntity = new ShoeEntity(ShoeFilter.Color.valueOf(shoeStock.getColor()),
+        shoeStock.getQuantity(),
+        shoeStock.getSize(),
+        shoeStock.getName());
+    shoeRepository.save(shoeEntity);
+
+    StockEntity stockEntity = new StockEntity(totalStock());
+    return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(List.of(shoeEntity)));
   }
 
 }
