@@ -19,4 +19,6 @@ public interface ShoeJpaRepository extends JpaRepository<ShoeEntity, String> {
   List<ShoeEntity> findByNameIn(List<String> names);
 
   List<ShoeEntity> findByNameNotIn(List<String> names);
+
+  boolean existsByName(String name);
 }

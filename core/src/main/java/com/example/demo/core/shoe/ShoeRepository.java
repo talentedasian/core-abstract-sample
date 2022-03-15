@@ -25,5 +25,5 @@ public interface ShoeRepository {
 
   List<ShoeEntity> updateAll(List<ShoeToUpdate> shoes);
 
-  int totalStockExcept(List<ShoeToUpdate> shoes);
+  int totalStockExcept(List<String> shoeNames);
 }

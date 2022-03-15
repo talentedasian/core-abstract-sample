@@ -67,7 +67,7 @@ public class StockService {
 
   @Transactional
   public Stock addShoe(ShoeToStock shoeStock) {
-    int totalStock = shoeRepository.totalStock();
+    int totalStock = shoeRepository.totalStockExcept(List.of(shoeStock.getName()));
     int finalTotalStock = totalStock + shoeStock.getQuantity();
     totalShoesQuantityOverflowStockCheck(finalTotalStock);
     ShoeEntity shoeEntity = new ShoeEntity(determineShoeColor(shoeStock.getColor()),
@@ -101,7 +101,7 @@ public class StockService {
 
   @Transactional
   public Stock updateStock(ShoeToUpdate shoe) {
-    int totalStock = shoeRepository.totalStockExcept(List.of(shoe));
+    int totalStock = shoeRepository.totalStockExcept(List.of(shoe.getName()));
     int finalTotal = shoe.getQuantity() + totalStock;
     totalShoesQuantityOverflowStockCheck(finalTotal);
 
@@ -111,7 +111,7 @@ public class StockService {
 
   @Transactional
   public Stock updateMultipleStock(List<ShoeToUpdate> shoes) {
-    int totalStock = shoeRepository.totalStockExcept(shoes);
+    int totalStock = shoeRepository.totalStockExcept(shoes.stream().map(ShoeToUpdate::getName).toList());
     int totalStockToAdd = shoes.stream().mapToInt(ShoeToUpdate::getQuantity).sum();
 
     int finalTotalStock = totalStock + totalStockToAdd;

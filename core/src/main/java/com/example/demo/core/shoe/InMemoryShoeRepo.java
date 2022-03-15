@@ -88,12 +88,12 @@ public class InMemoryShoeRepo implements ShoeRepository {
   }
 
   @Override
-  public int totalStockExcept(List<ShoeToUpdate> shoes) {
+  public int totalStockExcept(List<String> shoeNames) {
     Collection<ShoeEntity> shoeEntities = db.values();
     shoeEntities.forEach(shoeEntity -> {
-      shoes.stream()
+      shoeNames.stream()
           .forEach(shoe -> {
-            if (shoeEntity.getName().equals(shoe.getName())) {
+            if (shoeEntity.getName().equals(shoe)) {
               shoeEntities.remove(shoeEntity);
             }
           });

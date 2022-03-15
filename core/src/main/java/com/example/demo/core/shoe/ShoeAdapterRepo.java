@@ -27,7 +27,7 @@ public class ShoeAdapterRepo implements ShoeRepository {
 
   @Override
   public void save(ShoeEntity shoeEntity) {
-    if (shoeRepo.existsById(shoeEntity.getName())) {
+    if (shoeRepo.existsByName(shoeEntity.getName())) {
       throw new ShoeAlreadyExistsException();
     }
 
@@ -55,7 +55,7 @@ public class ShoeAdapterRepo implements ShoeRepository {
   @Override
   public ShoeEntity update(ShoeToUpdate shoe) {
     String id = shoe.getName();
-    if (shoeRepo.existsById(id)) {
+    if (shoeRepo.existsByName(id)) {
       shoeRepo.update(id, shoe.getQuantity());
       return shoeRepo.findById(id).get();
     }
@@ -65,7 +65,7 @@ public class ShoeAdapterRepo implements ShoeRepository {
 
   @Override
   public boolean containsShoe(String name) {
-    return shoeRepo.existsById(name);
+    return shoeRepo.existsByName(name);
   }
 
   @Override
@@ -81,9 +81,9 @@ public class ShoeAdapterRepo implements ShoeRepository {
   }
 
   @Override
-  public int totalStockExcept(List<ShoeToUpdate> shoes) {
+  public int totalStockExcept(List<String> shoeNames) {
     // todo : better query
-    return shoeRepo.findByNameNotIn(shoes.stream().map(ShoeToUpdate::getName).toList()).stream()
+    return shoeRepo.findByNameNotIn(shoeNames).stream()
         .mapToInt(ShoeEntity::getAvailableStock)
         .sum();
   }

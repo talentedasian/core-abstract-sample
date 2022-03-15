@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DataJpaTest
@@ -37,6 +39,17 @@ public class ShoeJpaRepositoryTest {
 
     assertThat(shoeQueried.getAvailableStock())
         .isEqualTo(quantityToUpdate);
+  }
+
+  @Test
+  public void findByNameNotIn() throws Exception{
+    List<String> names = List.of("Crocs", "Lincoln");
+    repo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 30, 8, "Crocs"));
+    repo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 30, 8, "Lincoln"));
+
+    List<ShoeEntity> shoesQueried = repo.findByNameNotIn(names);
+    assertThat(shoesQueried)
+        .hasSize(0);
   }
 
 }
