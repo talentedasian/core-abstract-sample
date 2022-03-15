@@ -4,9 +4,10 @@ It is very much recommended to use or test the application using the swagger-ui
 docs on `http://localhost:8080/swagger-ui/index.html`. If you prefer seeing the
 actual code then the controller tests on the `controller` module will be your
 best bet. Although the tests uses in memory repositories for faster execution,
-the databases behave exactly the same. But if you prefer using the JPA
+the adapter repositories behave exactly the same. But if you prefer using the JPA
 repositories instead, just remove the `Bean` configuration on the
-`TestConfiguration` and import the JPA repositories in any way you like.
+`TestConfiguration` static class and import the JPA repositories in any way you like, 
+such as `@Import({RepoToImport.class})`.
 
 ## Old and New Shoe Core
 
