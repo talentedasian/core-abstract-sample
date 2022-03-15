@@ -3,6 +3,7 @@ package com.example.demo.core.stock;
 import com.example.demo.core.Implementation;
 import com.example.demo.dto.in.ShoeToStock;
 import com.example.demo.dto.out.Stock;
+import com.example.demo.facade.ShoeFacade;
 import lombok.val;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public abstract class AbstractStockCore implements StockCore {
 
   @Autowired
-  StockFacade stockFacade;
+  ShoeFacade.StockFacade stockFacade;
   @Autowired
   StockService stockService;
 

@@ -1,4 +1,4 @@
-package com.example.demo.core;
+package com.example.demo;
 
 import com.example.demo.core.shoe.ShoeEntity;
 import com.example.demo.core.shoe.ShoeJpaRepository;
@@ -6,8 +6,6 @@ import com.example.demo.dto.in.ShoeFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 

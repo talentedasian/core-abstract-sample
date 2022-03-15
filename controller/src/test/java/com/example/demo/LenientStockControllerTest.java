@@ -5,9 +5,9 @@ import com.example.demo.core.shoe.InMemoryShoeRepo;
 import com.example.demo.core.shoe.ShoeEntity;
 import com.example.demo.core.shoe.ShoeRepository;
 import com.example.demo.core.stock.LenientStockCore;
-import com.example.demo.core.stock.StockFacade;
 import com.example.demo.core.stock.StockService;
 import com.example.demo.dto.in.ShoeFilter;
+import com.example.demo.facade.ShoeFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +84,8 @@ public class LenientStockControllerTest {
   @TestConfiguration
   static class Configuration {
     @Bean
-    public StockFacade stockFacade() {
-      return new StockFacade();
+    public ShoeFacade.StockFacade stockFacade() {
+      return new ShoeFacade.StockFacade();
     }
     @Bean
     ShoeRepository shoeRepository() {

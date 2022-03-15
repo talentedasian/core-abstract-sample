@@ -4,16 +4,12 @@ import com.example.demo.core.shoe.ShoeAlreadyExistsException;
 import com.example.demo.core.shoe.ShoeNotFoundException;
 import com.example.demo.core.stock.ShoeFilterNullException;
 import com.example.demo.core.stock.StockOverflowException;
-import com.example.demo.dto.in.ShoeFilter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice

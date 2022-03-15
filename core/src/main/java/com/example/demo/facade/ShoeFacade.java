@@ -1,6 +1,8 @@
 package com.example.demo.facade;
 
 import com.example.demo.core.shoe.ShoeCore;
+import com.example.demo.core.stock.StockCore;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -19,4 +21,18 @@ public class ShoeFacade {
     this.implementations.put(version, implementation);
   }
 
+  @Component
+  @RequiredArgsConstructor
+  public static class StockFacade {
+
+    private final Map<Integer, StockCore> implementations = new HashMap<>();
+
+    public StockCore get(Integer version){
+      return implementations.get(version);
+    }
+
+    public void register(Integer version, StockCore stockImplementation) {
+      implementations.put(version, stockImplementation);
+    }
+  }
 }

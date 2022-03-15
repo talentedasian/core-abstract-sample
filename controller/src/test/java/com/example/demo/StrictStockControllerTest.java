@@ -4,10 +4,10 @@ import com.example.demo.controller.StockController;
 import com.example.demo.core.shoe.InMemoryShoeRepo;
 import com.example.demo.core.shoe.ShoeEntity;
 import com.example.demo.core.shoe.ShoeRepository;
-import com.example.demo.core.stock.StockFacade;
 import com.example.demo.core.stock.StockService;
 import com.example.demo.core.stock.StrictStockCore;
 import com.example.demo.dto.in.ShoeFilter;
+import com.example.demo.facade.ShoeFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,6 +151,7 @@ public class StrictStockControllerTest {
     mvc.perform(post(create("/stock"))
             .header("version", 1)
             .content(reqContent)
+
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isConflict())
         .andExpect(jsonPath("reason", containsStringIgnoringCase("already exists")));
@@ -169,8 +170,8 @@ public class StrictStockControllerTest {
   @TestConfiguration
   static class Configuration {
     @Bean
-    public StockFacade stockFacade() {
-      return new StockFacade();
+    public ShoeFacade.StockFacade stockFacade() {
+      return new ShoeFacade.StockFacade();
     }
     @Bean
     ShoeRepository shoeRepository() {

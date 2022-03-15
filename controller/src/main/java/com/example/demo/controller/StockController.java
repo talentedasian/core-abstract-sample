@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.core.stock.StockFacade;
 import com.example.demo.dto.in.ShoeFilter;
 import com.example.demo.dto.in.ShoeToStock;
 import com.example.demo.dto.in.ShoeToUpdate;
 import com.example.demo.dto.out.Stock;
+import com.example.demo.facade.ShoeFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockController {
 
-  private final StockFacade stockFacade;
+  private final ShoeFacade.StockFacade stockFacade;
 
   @GetMapping(path = "stock")
   public ResponseEntity<Stock> totalStockOnShop(ShoeFilter shoeFilter, @RequestHeader int version) {
