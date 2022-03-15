@@ -70,7 +70,7 @@ public class StockService {
     int totalStock = shoeRepository.totalStock();
     int finalTotalStock = totalStock + shoeStock.getQuantity();
     totalShoesQuantityOverflowStockCheck(finalTotalStock);
-    ShoeEntity shoeEntity = new ShoeEntity(ShoeFilter.Color.valueOf(shoeStock.getColor()),
+    ShoeEntity shoeEntity = new ShoeEntity(determineShoeColor(shoeStock.getColor()),
         shoeStock.getQuantity(),
         shoeStock.getSize(),
         shoeStock.getName());
@@ -78,6 +78,14 @@ public class StockService {
 
     StockEntity stockEntity = new StockEntity(finalTotalStock);
     return new Stock(shoesStockState(stockEntity), shoesGroupedByColor(List.of(shoeEntity)));
+  }
+
+  private ShoeFilter.Color determineShoeColor(String color) {
+    try {
+      return ShoeFilter.Color.valueOf(color);
+    } catch(IllegalArgumentException e) {
+      throw new ColorUnsupportedException();
+    }
   }
 
   private void totalShoesQuantityOverflowStockCheck(int totalStock) {

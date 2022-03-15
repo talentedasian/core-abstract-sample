@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.core.shoe.ShoeAlreadyExistsException;
 import com.example.demo.core.shoe.ShoeNotFoundException;
+import com.example.demo.core.stock.ColorUnsupportedException;
 import com.example.demo.core.stock.ShoeFilterNullException;
 import com.example.demo.core.stock.StockOverflowException;
 import lombok.Getter;
@@ -38,6 +39,12 @@ public class StockExceptionHandling extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ShoeFilterNullException.class)
   public ResponseEntity<ExceptionMessage> handleShoeFilterNull() {
     var reason = new ExceptionMessage("Color and Size must be present in the request");
+    return new ResponseEntity<ExceptionMessage>(reason, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ColorUnsupportedException.class)
+  public ResponseEntity<ExceptionMessage> handleUnsupportedShoeColor() {
+    var reason = new ExceptionMessage("Shoe color is currently unsupported");
     return new ResponseEntity<ExceptionMessage>(reason, HttpStatus.BAD_REQUEST);
   }
 
