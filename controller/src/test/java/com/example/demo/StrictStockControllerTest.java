@@ -100,7 +100,7 @@ public class StrictStockControllerTest {
             .header("version", 1)
             .content(reqContent)
             .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
+        .andExpect(status().isCreated())
         .andExpect(jsonPath("state", equalTo("SOME")))
         .andExpect(jsonPath("shoes[0].color", equalTo(color)))
         .andExpect(jsonPath("shoes[0].quantity", equalTo(quantity)))

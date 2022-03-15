@@ -29,19 +29,19 @@ public class StockController {
   @PostMapping(path = "stock")
   public ResponseEntity<Stock> addShoeToGlobalStock(@Valid @RequestBody ShoeToStock shoe, @RequestHeader int version) {
 
-    return ResponseEntity.ok(stockFacade.get(version).addShoeToStock(shoe));
+    return ResponseEntity.status(201).body(stockFacade.get(version).addShoeToStock(shoe));
 
   }
 
   @PatchMapping(path = "stock")
-  public ResponseEntity<Stock> addShoeToGlobalStock(@Valid @RequestBody ShoeToUpdate shoe, @RequestHeader int version) {
+  public ResponseEntity<Stock> updateShoeAvailableStock(@Valid @RequestBody ShoeToUpdate shoe, @RequestHeader int version) {
 
     return ResponseEntity.ok(stockFacade.get(version).updateShoeQuantity(shoe));
 
   }
 
   @PatchMapping(path = "stocks")
-  public ResponseEntity<Stock> addShoesToGlobalStock(@Valid @RequestBody List<ShoeToUpdate> shoe) {
+  public ResponseEntity<Stock> updateShoesAvailableStock(@Valid @RequestBody List<ShoeToUpdate> shoe) {
 
     return ResponseEntity.ok(stockFacade.get(2).updateShoesQuantity(shoe));
 
