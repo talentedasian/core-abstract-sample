@@ -12,7 +12,13 @@ public class StrictStockCore extends AbstractStockCore {
 
   @Override
   public Stock globalStock(ShoeFilter shoeFilter) {
-    return stockService.fetchStock(shoeFilter);
+    if (shoeFilter != null) {
+      if (shoeFilter.getSize().isEmpty() || shoeFilter.getColor().isEmpty()) {
+        throw new ShoeFilterNullException();
+      }
+      return stockService.fetchStock(shoeFilter);
+    }
+    throw new ShoeFilterNullException();
   }
 
   @Override

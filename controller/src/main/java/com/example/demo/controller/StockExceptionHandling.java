@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.core.shoe.ShoeAlreadyExistsException;
 import com.example.demo.core.shoe.ShoeNotFoundException;
+import com.example.demo.core.stock.ShoeFilterNullException;
 import com.example.demo.core.stock.StockOverflowException;
+import com.example.demo.dto.in.ShoeFilter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +37,12 @@ public class StockExceptionHandling extends ResponseEntityExceptionHandler {
   public ResponseEntity<ExceptionMessage> handleSavingExistingShoe() {
     var reason = new ExceptionMessage("Shoe already exists. Consider updating instead");
     return new ResponseEntity<ExceptionMessage>(reason, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(ShoeFilterNullException.class)
+  public ResponseEntity<ExceptionMessage> handleShoeFilterNull() {
+    var reason = new ExceptionMessage("Color and Size must be present in the request");
+    return new ResponseEntity<ExceptionMessage>(reason, HttpStatus.BAD_REQUEST);
   }
 
   @Getter

@@ -156,6 +156,16 @@ public class StrictStockControllerTest {
         .andExpect(jsonPath("reason", containsStringIgnoringCase("already exists")));
   }
 
+  @Test
+  public void badRequestIfShoeFilterIsNullOrOneOfItsFieldsIs() throws Exception{
+    shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 20, 10, "Crocs"));
+
+    mvc.perform(get(create("/stock"))
+            .header("version", 1))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("reason", containsStringIgnoringCase("present in the request")));
+  }
+
   @TestConfiguration
   static class Configuration {
     @Bean
