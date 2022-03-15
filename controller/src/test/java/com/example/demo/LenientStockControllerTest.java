@@ -20,8 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static java.net.URI.create;
-import static org.hamcrest.CoreMatchers.containsStringIgnoringCase;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,6 +37,22 @@ public class LenientStockControllerTest {
   @BeforeEach
   public void setup() {
     shoeRepo.deleteAll();
+  }
+
+  @Test
+  public void allShoesIfShoeFilterIsNullOrOneOfTheFieldsAreNull() throws Exception{
+    String lincoln = "Lincoln";
+    String nike = "nike";
+    shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 10, 8, lincoln));
+    shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 20, 8, nike));
+    shoeRepo.save(new ShoeEntity(ShoeFilter.Color.BLACK, 0, 8, "Random"));
+
+    mvc.perform(get(create("/stock"))
+            .header("version", 2))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("state", equalTo("FULL")))
+                                      // check if all shoes are indeed included
+        .andExpect(jsonPath("shoes[0].models[*].quantity", hasItem(0)));
   }
 
   @Test
@@ -59,7 +75,6 @@ public class LenientStockControllerTest {
         """.formatted(name, size, quantity, color);
 
     mvc.perform(patch(create("/stocks"))
-            .header("version", 2)
             .content(reqContent)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isConflict())

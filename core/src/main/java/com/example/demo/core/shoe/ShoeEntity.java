@@ -2,10 +2,12 @@ package com.example.demo.core.shoe;
 
 import com.example.demo.dto.in.ShoeFilter.Color;
 import com.example.demo.dto.out.Shoe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigInteger;
@@ -15,6 +17,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity(name = "shoe")
+@EqualsAndHashCode
 public class ShoeEntity {
 
   @Id
@@ -38,25 +41,4 @@ public class ShoeEntity {
         .build();
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    ShoeEntity that = (ShoeEntity) o;
-
-    if (availableStock != that.availableStock) return false;
-    if (size != that.size) return false;
-    if (!Objects.equals(name, that.name)) return false;
-    return Objects.equals(color, that.color);
-  }
-
-  @Override
-  public int hashCode() {
-    int result = name != null ? name.hashCode() : 0;
-    result = 31 * result + (color != null ? color.hashCode() : 0);
-    result = 31 * result + availableStock;
-    result = 31 * result + size;
-    return result;
-  }
 }

@@ -27,6 +27,10 @@ public class ShoeAdapterRepo implements ShoeRepository {
 
   @Override
   public void save(ShoeEntity shoeEntity) {
+    if (shoeRepo.existsById(shoeEntity.getName())) {
+      throw new ShoeAlreadyExistsException();
+    }
+
     shoeRepo.save(shoeEntity);
   }
 

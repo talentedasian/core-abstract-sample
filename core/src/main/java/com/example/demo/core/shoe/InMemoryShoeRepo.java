@@ -28,6 +28,10 @@ public class InMemoryShoeRepo implements ShoeRepository {
 
   @Override
   public void save(ShoeEntity shoeEntity) {
+    if (db.containsKey(shoeEntity.getName())) {
+      throw new ShoeAlreadyExistsException();
+    }
+
     db.put(shoeEntity.getName(), shoeEntity);
   }
 

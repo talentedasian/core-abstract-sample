@@ -21,7 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static java.net.URI.create;
 import static org.hamcrest.CoreMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,7 +83,7 @@ public class StrictStockControllerTest {
 
   @Test
   public void addShoeToStock() throws Exception{
-    String name = "Crocs";
+    String shoeName = "Crocs";
     int size = 1;
     int quantity = 10;
     String color = "BLACK";
@@ -93,7 +94,7 @@ public class StrictStockControllerTest {
           "quantity": %s,
           "color": "%s"
         }
-        """.formatted(name, size, quantity, color);
+        """.formatted(shoeName, size, quantity, color);
 
     mvc.perform(post(create("/stock"))
             .header("version", 1)
@@ -129,6 +130,30 @@ public class StrictStockControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isConflict())
         .andExpect(jsonPath("reason", containsStringIgnoringCase("total stock if request is processed is 31")));
+  }
+
+  @Test
+  public void conflictWhenAddingShoeThatAlreadyExists() throws Exception{
+    ShoeFilter.Color color = ShoeFilter.Color.BLACK;
+    String shoeName = "Lincoln";
+
+    shoeRepo.save(new ShoeEntity(color, 20, 10, shoeName));
+
+    String reqContent = """
+        {
+          "name": "%s",
+          "size": %s,
+          "quantity": %s,
+          "color": "%s"
+        }
+        """.formatted(shoeName, 10, 10, color);
+
+    mvc.perform(post(create("/stock"))
+            .header("version", 1)
+            .content(reqContent)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("reason", containsStringIgnoringCase("already exists")));
   }
 
   @TestConfiguration

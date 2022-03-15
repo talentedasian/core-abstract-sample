@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.core.shoe.ShoeAlreadyExistsException;
 import com.example.demo.core.shoe.ShoeNotFoundException;
 import com.example.demo.core.stock.StockOverflowException;
 import lombok.Getter;
@@ -25,8 +26,14 @@ public class StockExceptionHandling extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(ShoeNotFoundException.class)
-  public ResponseEntity<ExceptionMessage> handleShoeNotFoundForUpdates(ShoeNotFoundException e) {
+  public ResponseEntity<ExceptionMessage> handleShoeNotFoundForUpdates() {
     var reason = new ExceptionMessage("Could not update non existing shoe");
+    return new ResponseEntity<ExceptionMessage>(reason, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(ShoeAlreadyExistsException.class)
+  public ResponseEntity<ExceptionMessage> handleSavingExistingShoe() {
+    var reason = new ExceptionMessage("Shoe already exists. Consider updating instead");
     return new ResponseEntity<ExceptionMessage>(reason, HttpStatus.CONFLICT);
   }
 

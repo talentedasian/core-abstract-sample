@@ -85,12 +85,6 @@ public class StockService {
     maxStockCheck(willTotalQuantityOverflowMaxStock, totalStock);
   }
 
-  private void sizeOfListOverflowStockCheck(int totalStock, List shoes) {
-    int total = totalStock + shoes.size();
-    boolean willListOfShoeModelsToAddOverflowMaxStock = !StockEntity.isBelowFull(total);
-    maxStockCheck(willListOfShoeModelsToAddOverflowMaxStock, total);
-  }
-
   private void maxStockCheck(boolean willOverflowMaxStock, int totalStock) {
     if (willOverflowMaxStock) {
       throw new StockOverflowException(totalStock);
@@ -112,7 +106,6 @@ public class StockService {
     int totalStock = shoeRepository.totalStockExcept(shoes);
     int totalStockToAdd = shoes.stream().mapToInt(ShoeToUpdate::getQuantity).sum();
 
-    sizeOfListOverflowStockCheck(totalStock, shoes);
     int finalTotalStock = totalStock + totalStockToAdd;
     // asserts whether stocks from multiple shoes will still be within the limit
     totalShoesQuantityOverflowStockCheck(finalTotalStock);
